@@ -104,3 +104,4 @@ php artisan serve
 |------------------|--------------------------|
 | `main`           | Stable production branch |
 | `feat/database`  | Database feature branch  |
+| `feat/models`    | Models for the thing     |

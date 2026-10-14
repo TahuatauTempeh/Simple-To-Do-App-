@@ -1,58 +1,106 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Todo App
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A personal to-do list web app built with **Laravel**, **Blade** and **PostgreSQL**. Users can register, create categories, add tasks to each category, tick tasks off when done, and set a priority and due date.
 
-## About Laravel
+## Features
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- User accounts (register, log in, log out)
+- Dashboard with task overview
+- Categories, each with its own tasks
+- View all tasks or filter by category
+- Tick tasks as done
+- Task priority (1 urgent, 2 normal, 3 laidback) and due date
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Tech Stack
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- Laravel (PHP) with Blade templates
+- Laravel Breeze for authentication
+- Tailwind CSS compiled with Vite
+- PostgreSQL (hosted on Aiven)
 
-## Learning Laravel
+## Project Structure
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
-
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
-
-## Agentic Development
-
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
-
-```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+```
+todo-app/
+├── backend/          # The whole Laravel application
+│   ├── app/          # Models and controllers
+│   ├── config/
+│   ├── database/     # Migrations
+│   ├── public/
+│   ├── resources/    # Blade views, CSS and JS
+│   ├── routes/
+│   ├── storage/
+│   ├── tests/
+│   ├── artisan
+│   ├── composer.json
+│   ├── package.json
+│   └── vite.config.js
+│
+├── .gitignore
+└── README.md
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+Ignore the frontend folder since that was a mistake that I made and I can't be bothered to delete it.
 
-## Contributing
+## Database
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+| Table        | Purpose                                              |
+|--------------|------------------------------------------------------|
+| `users`      | Accounts (Laravel default)                           |
+| `categories` | A user's categories (`category_name`, `colour`)      |
+| `tasks`      | Tasks inside a category (`task_name`, `description`, `is_done`, `priority`, `due_date`, `completed_at`) |
 
-## Code of Conduct
+All foreign keys cascade on delete, so deleting a category also deletes its tasks.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## Getting Started
 
-## Security Vulnerabilities
+Run everything from inside the `backend` folder.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+```bash
+cd backend
 
-## License
+# Install PHP dependencies
+composer install
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+# Copy the environment file and generate an app key
+cp .env.example .env
+php artisan key:generate
+```
+
+Open `.env` and fill in your PostgreSQL details:
+
+```
+DB_CONNECTION=pgsql
+DB_HOST=
+DB_PORT=
+DB_DATABASE=
+DB_USERNAME=
+DB_PASSWORD=
+DB_SSLMODE=require
+```
+
+Then:
+
+```bash
+# Create the tables
+php artisan migrate
+
+# Install JS dependencies and start Vite (keep this terminal open)
+npm install
+npm run dev
+```
+
+In a second terminal, start the Laravel server:
+
+```bash
+cd backend
+php artisan serve
+```
+
+
+## Current Branches and Their Uses
+
+| Branch           | Description              |
+|------------------|--------------------------|
+| `main`           | Stable production branch |
+| `feat/database`  | Database feature branch  |

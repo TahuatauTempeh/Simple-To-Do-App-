@@ -23,7 +23,7 @@ return new class extends Migration
             // when it was created
             $table->timestamps();
             // no categories can have the same name for a user
-            $table->unique('user_id', 'category_name');
+            $table->unique(['user_id', 'category_name']);
         });
     }
 
